@@ -2,6 +2,8 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { getPostData, getAllPostSlugs, getSortedPostsData } from '@/lib/posts'
 import { formatDate, calculateReadingTime } from '@/lib/utils'
+import { getApprovedComments } from '@/lib/comments'
+import CommentSection from '@/components/blog/CommentSection'
 
 export async function generateStaticParams() {
   const slugs = getAllPostSlugs()
@@ -43,6 +45,14 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
   const currentIndex = allPosts.findIndex((p) => p.slug === slug)
   const prevPost = currentIndex < allPosts.length - 1 ? allPosts[currentIndex + 1] : null
   const nextPost = currentIndex > 0 ? allPosts[currentIndex - 1] : null
+
+  // 获取已审核的评论
+  let comments: any[] = []
+  try {
+    comments = await getApprovedComments(slug)
+  } catch {
+    // 评论获取失败不影响页面显示
+  }
 
   return (
     <article className="container-custom py-12 max-w-4xl mx-auto">
@@ -112,14 +122,7 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
         </div>
       </nav>
 
-      <section className="mt-12 pt-8 border-t border-cream-300">
-        <h2 className="text-2xl font-bold text-warm-900 mb-6">评论</h2>
-        <div className="bg-white rounded-xl border border-cream-300 p-6">
-          <p className="text-warm-600 text-center py-8">
-            评论功能即将上线...
-          </p>
-        </div>
-      </section>
+      <CommentSection postId={slug} initialComments={comments} />
     </article>
   )
 }

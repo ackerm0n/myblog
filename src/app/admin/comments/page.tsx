@@ -2,12 +2,13 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { useAuth } from '@/lib/auth'
+import { getAllComments, updateCommentStatus, deleteComment } from '@/lib/comments'
 import { formatDate } from '@/lib/utils'
 
 interface Comment {
   id: string
   post_id: string
-  post_title?: string
   nickname: string
   email: string
   content: string
@@ -16,55 +17,92 @@ interface Comment {
 }
 
 export default function AdminCommentsPage() {
+  const { user, loading: authLoading, isAdmin, signInWithGitHub } = useAuth()
   const [comments, setComments] = useState<Comment[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [filter, setFilter] = useState<'all' | 'pending' | 'approved' | 'rejected'>('all')
 
   useEffect(() => {
-    // TODO: 从 Supabase 获取评论列表
-    // 这里使用模拟数据
-    setComments([
-      {
-        id: '1',
-        post_id: '1',
-        post_title: 'Hello World',
-        nickname: '访客',
-        email: 'visitor@example.com',
-        content: '写得很好，期待更多文章！',
-        status: 'pending',
-        created_at: '2026-05-06',
-      },
-    ])
-    setIsLoading(false)
-  }, [])
+    if (isAdmin) {
+      loadComments()
+    } else {
+      setIsLoading(false)
+    }
+  }, [isAdmin])
+
+  const loadComments = async () => {
+    try {
+      const data = await getAllComments()
+      setComments(data)
+    } catch (error) {
+      console.error('加载评论失败:', error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
   const handleStatusChange = async (id: string, newStatus: 'approved' | 'rejected') => {
-    // TODO: 更新 Supabase 中的评论状态
-    setComments(
-      comments.map((comment) =>
-        comment.id === id ? { ...comment, status: newStatus } : comment
+    try {
+      await updateCommentStatus(id, newStatus)
+      setComments(
+        comments.map((comment) =>
+          comment.id === id ? { ...comment, status: newStatus } : comment
+        )
       )
-    )
+    } catch (error) {
+      alert('操作失败')
+    }
   }
 
   const handleDelete = async (id: string) => {
     if (!confirm('确定要删除这条评论吗？')) return
-    // TODO: 从 Supabase 删除评论
-    setComments(comments.filter((comment) => comment.id !== id))
+    try {
+      await deleteComment(id)
+      setComments(comments.filter((comment) => comment.id !== id))
+    } catch (error) {
+      alert('删除失败')
+    }
   }
 
-  const filteredComments =
-    filter === 'all'
-      ? comments
-      : comments.filter((comment) => comment.status === filter)
-
-  if (isLoading) {
+  if (authLoading || isLoading) {
     return (
       <div className="container-custom py-12">
         <div className="text-center text-warm-600">加载中...</div>
       </div>
     )
   }
+
+  if (!user) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="bg-white rounded-xl border border-cream-300 p-8 max-w-md w-full text-center">
+          <h1 className="text-2xl font-bold text-warm-900 mb-6">请先登录</h1>
+          <button
+            onClick={signInWithGitHub}
+            className="px-6 py-3 bg-warm-900 text-white rounded-lg hover:bg-warm-800 transition-colors font-medium"
+          >
+            使用 GitHub 登录
+          </button>
+        </div>
+      </div>
+    )
+  }
+
+  if (!isAdmin) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="bg-white rounded-xl border border-cream-300 p-8 max-w-md w-full text-center">
+          <h1 className="text-2xl font-bold text-warm-900 mb-4">权限不足</h1>
+          <p className="text-warm-600">只有管理员可以访问此页面。</p>
+        </div>
+      </div>
+    )
+  }
+
+  const filteredComments =
+    filter === 'all'
+      ? comments
+      : comments.filter((comment) => comment.status === filter)
 
   return (
     <div className="container-custom py-12">
@@ -77,7 +115,6 @@ export default function AdminCommentsPage() {
         </div>
       </div>
 
-      {/* 筛选器 */}
       <div className="flex gap-4 mb-6">
         {(['all', 'pending', 'approved', 'rejected'] as const).map((status) => (
           <button
@@ -127,15 +164,7 @@ export default function AdminCommentsPage() {
                     </div>
                   </div>
                   <p className="text-sm text-warm-500">
-                    评论于{' '}
-                    <Link
-                      href={`/posts/${comment.post_id}`}
-                      className="text-warm-300 hover:text-warm-400"
-                    >
-                      {comment.post_title || '文章'}
-                    </Link>
-                    {' · '}
-                    {formatDate(comment.created_at)}
+                    文章: {comment.post_id} · {formatDate(comment.created_at)}
                   </p>
                 </div>
                 <span
