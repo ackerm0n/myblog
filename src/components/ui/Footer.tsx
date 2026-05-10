@@ -8,7 +8,7 @@ const footerLinks = [
 
 export default function Footer() {
   return (
-    <footer className="bg-white/80 backdrop-blur-sm border-t border-cream-300 relative z-10">
+    <footer className="bg-white/60 backdrop-blur-xl border-t border-cream-300/50 relative z-10">
       <div className="container-custom py-12">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
