@@ -67,7 +67,7 @@ export default function AdminCommentsPage() {
   if (authLoading || isLoading) {
     return (
       <div className="container-custom py-12">
-        <div className="text-center text-warm-600">加载中...</div>
+        <div className="text-center text-warm-600 dark:text-warm-400">加载中...</div>
       </div>
     )
   }
@@ -75,11 +75,11 @@ export default function AdminCommentsPage() {
   if (!user) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="bg-white rounded-xl border border-cream-300 p-8 max-w-md w-full text-center">
-          <h1 className="text-2xl font-bold text-warm-900 mb-6">请先登录</h1>
+        <div className="bg-white dark:bg-warm-900/80 rounded-xl border border-cream-300 dark:border-warm-700 p-8 max-w-md w-full text-center">
+          <h1 className="text-2xl font-bold text-warm-900 dark:text-cream-100 mb-6">请先登录</h1>
           <button
             onClick={signInWithGitHub}
-            className="px-6 py-3 bg-warm-900 text-white rounded-lg hover:bg-warm-800 transition-colors font-medium"
+            className="px-6 py-3 bg-warm-900 dark:bg-warm-700 text-white rounded-lg hover:bg-warm-800 dark:hover:bg-warm-600 transition-colors font-medium"
           >
             使用 GitHub 登录
           </button>
@@ -91,9 +91,9 @@ export default function AdminCommentsPage() {
   if (!isAdmin) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="bg-white rounded-xl border border-cream-300 p-8 max-w-md w-full text-center">
-          <h1 className="text-2xl font-bold text-warm-900 mb-4">权限不足</h1>
-          <p className="text-warm-600">只有管理员可以访问此页面。</p>
+        <div className="bg-white dark:bg-warm-900/80 rounded-xl border border-cream-300 dark:border-warm-700 p-8 max-w-md w-full text-center">
+          <h1 className="text-2xl font-bold text-warm-900 dark:text-cream-100 mb-4">权限不足</h1>
+          <p className="text-warm-600 dark:text-warm-400">只有管理员可以访问此页面。</p>
         </div>
       </div>
     )
@@ -108,10 +108,10 @@ export default function AdminCommentsPage() {
     <div className="container-custom py-12">
       <div className="flex items-center justify-between mb-8">
         <div>
-          <Link href="/admin" className="text-warm-300 hover:text-warm-400 mb-2 inline-block">
+          <Link href="/admin" className="text-warm-300 dark:text-warm-300 hover:text-warm-400 dark:hover:text-warm-400 mb-2 inline-block">
             ← 返回管理后台
           </Link>
-          <h1 className="text-3xl font-bold text-warm-900">评论管理</h1>
+          <h1 className="text-3xl font-bold text-warm-900 dark:text-cream-100">评论管理</h1>
         </div>
       </div>
 
@@ -122,8 +122,8 @@ export default function AdminCommentsPage() {
             onClick={() => setFilter(status)}
             className={`px-4 py-2 rounded-lg transition-colors ${
               filter === status
-                ? 'bg-warm-300 text-white'
-                : 'bg-white border border-cream-300 text-warm-700 hover:bg-cream-100'
+                ? 'bg-warm-300 dark:bg-warm-500 text-white'
+                : 'bg-white dark:bg-warm-900/80 border border-cream-300 dark:border-warm-700 text-warm-700 dark:text-warm-300 hover:bg-cream-100 dark:hover:bg-warm-700'
             }`}
           >
             {status === 'all'
@@ -139,31 +139,31 @@ export default function AdminCommentsPage() {
 
       {filteredComments.length === 0 ? (
         <div className="text-center py-16">
-          <p className="text-warm-600 text-lg">暂无评论</p>
+          <p className="text-warm-600 dark:text-warm-400 text-lg">暂无评论</p>
         </div>
       ) : (
         <div className="space-y-4">
           {filteredComments.map((comment) => (
             <div
               key={comment.id}
-              className="bg-white rounded-xl border border-cream-300 p-6"
+              className="bg-white dark:bg-warm-900/80 rounded-xl border border-cream-300 dark:border-warm-700 p-6"
             >
               <div className="flex items-start justify-between mb-4">
                 <div>
                   <div className="flex items-center gap-3 mb-2">
-                    <div className="w-10 h-10 rounded-full bg-cream-200 flex items-center justify-center">
-                      <span className="text-warm-600 font-semibold">
+                    <div className="w-10 h-10 rounded-full bg-cream-200 dark:bg-warm-800 flex items-center justify-center">
+                      <span className="text-warm-600 dark:text-warm-400 font-semibold">
                         {comment.nickname.charAt(0).toUpperCase()}
                       </span>
                     </div>
                     <div>
-                      <h4 className="font-semibold text-warm-900">
+                      <h4 className="font-semibold text-warm-900 dark:text-cream-100">
                         {comment.nickname}
                       </h4>
-                      <p className="text-sm text-warm-500">{comment.email}</p>
+                      <p className="text-sm text-warm-500 dark:text-warm-400">{comment.email}</p>
                     </div>
                   </div>
-                  <p className="text-sm text-warm-500">
+                  <p className="text-sm text-warm-500 dark:text-warm-400">
                     文章: {comment.post_id} · {formatDate(comment.created_at)}
                   </p>
                 </div>
@@ -172,7 +172,7 @@ export default function AdminCommentsPage() {
                     comment.status === 'pending'
                       ? 'bg-yellow-100 text-yellow-700'
                       : comment.status === 'approved'
-                      ? 'bg-sage-100 text-sage-700'
+                      ? 'bg-sage-100 dark:bg-sage-900/30 text-sage-700 dark:text-sage-300'
                       : 'bg-red-100 text-red-700'
                   }`}
                 >
@@ -184,7 +184,7 @@ export default function AdminCommentsPage() {
                 </span>
               </div>
 
-              <p className="text-warm-700 mb-4 whitespace-pre-wrap">
+              <p className="text-warm-700 dark:text-warm-300 mb-4 whitespace-pre-wrap">
                 {comment.content}
               </p>
 

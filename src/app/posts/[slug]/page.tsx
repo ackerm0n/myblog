@@ -1,9 +1,11 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { getPostData, getAllPostSlugs, getSortedPostsData } from '@/lib/posts'
-import { formatDate, calculateReadingTime } from '@/lib/utils'
+import { formatDate } from '@/lib/utils'
 import { getApprovedComments } from '@/lib/comments'
 import CommentSection from '@/components/blog/CommentSection'
+import TableOfContents from '@/components/ui/TableOfContents'
+import ReadingProgressBar from '@/components/ui/ReadingProgressBar'
 
 export async function generateStaticParams() {
   const slugs = getAllPostSlugs()
@@ -55,12 +57,14 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
   }
 
   return (
-    <article className="container-custom py-12 max-w-4xl mx-auto">
+    <article className="container-custom py-12 max-w-6xl mx-auto">
+      <ReadingProgressBar />
+
       <header className="mb-8">
-        <div className="flex items-center gap-2 mb-4">
+        <div className="flex items-center gap-2 mb-4 flex-wrap">
           <Link
             href={`/categories/${post.category}`}
-            className="px-3 py-1 bg-cream-200 text-warm-600 rounded-full text-sm hover:bg-cream-300 transition-colors"
+            className="px-3 py-1 bg-cream-200 dark:bg-warm-800 text-warm-600 dark:text-warm-400 rounded-full text-sm hover:bg-cream-300 dark:hover:bg-warm-700 transition-colors"
           >
             {post.category}
           </Link>
@@ -69,20 +73,20 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
               {formatDate(post.published_at)}
             </time>
           )}
-          <span className="text-warm-500 text-sm">
-            · {calculateReadingTime(post.contentHtml || '')} 分钟阅读
+          <span className="text-warm-400 dark:text-warm-500 text-sm">
+            · {post.readingTime || 1} 分钟阅读
           </span>
         </div>
-        <h1 className="text-4xl md:text-5xl font-bold text-warm-900 mb-4">
+        <h1 className="text-4xl md:text-5xl font-bold text-warm-900 dark:text-cream-100 mb-4">
           {post.title}
         </h1>
-        <p className="text-xl text-warm-600">{post.excerpt}</p>
+        <p className="text-xl text-warm-600 dark:text-warm-400">{post.excerpt}</p>
         <div className="flex flex-wrap gap-2 mt-4">
           {post.tags.map((tag) => (
             <Link
               key={tag}
               href={`/tags/${tag}`}
-              className="px-3 py-1 bg-cream-100 text-warm-500 rounded-full text-sm hover:bg-cream-200 transition-colors"
+              className="px-3 py-1 bg-cream-100 dark:bg-warm-800/60 text-warm-500 dark:text-warm-400 rounded-full text-sm hover:bg-cream-200 dark:hover:bg-warm-700 transition-colors"
             >
               #{tag}
             </Link>
@@ -90,39 +94,53 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
         </div>
       </header>
 
-      <div
-        className="prose prose-warm max-w-none"
-        dangerouslySetInnerHTML={{ __html: post.contentHtml || '' }}
-      />
+      <div className="flex gap-8">
+        {/* 文章主体 */}
+        <div className="flex-1 min-w-0">
+          <div
+            className="prose prose-warm dark:prose-invert max-w-none"
+            dangerouslySetInnerHTML={{ __html: post.contentHtml || '' }}
+          />
 
-      <nav className="mt-12 pt-8 border-t border-cream-300">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {prevPost && (
-            <Link
-              href={`/posts/${prevPost.slug}`}
-              className="p-4 bg-white rounded-xl border border-cream-300 hover:border-warm-300 transition-colors"
-            >
-              <span className="text-sm text-warm-500">← 上一篇</span>
-              <h3 className="text-lg font-semibold text-warm-900 mt-1">
-                {prevPost.title}
-              </h3>
-            </Link>
-          )}
-          {nextPost && (
-            <Link
-              href={`/posts/${nextPost.slug}`}
-              className="p-4 bg-white rounded-xl border border-cream-300 hover:border-warm-300 transition-colors md:text-right"
-            >
-              <span className="text-sm text-warm-500">下一篇 →</span>
-              <h3 className="text-lg font-semibold text-warm-900 mt-1">
-                {nextPost.title}
-              </h3>
-            </Link>
-          )}
+          {/* 上下篇导航 */}
+          <nav className="mt-12 pt-8 border-t border-cream-300 dark:border-warm-700">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {prevPost && (
+                <Link
+                  href={`/posts/${prevPost.slug}`}
+                  className="p-4 bg-white dark:bg-warm-900/80 rounded-xl border border-cream-300 dark:border-warm-700 hover:border-warm-300 dark:hover:border-warm-500 transition-colors"
+                >
+                  <span className="text-sm text-warm-500">← 上一篇</span>
+                  <h3 className="text-lg font-semibold text-warm-900 dark:text-cream-100 mt-1">
+                    {prevPost.title}
+                  </h3>
+                </Link>
+              )}
+              {nextPost && (
+                <Link
+                  href={`/posts/${nextPost.slug}`}
+                  className="p-4 bg-white dark:bg-warm-900/80 rounded-xl border border-cream-300 dark:border-warm-700 hover:border-warm-300 dark:hover:border-warm-500 transition-colors md:text-right"
+                >
+                  <span className="text-sm text-warm-500">下一篇 →</span>
+                  <h3 className="text-lg font-semibold text-warm-900 dark:text-cream-100 mt-1">
+                    {nextPost.title}
+                  </h3>
+                </Link>
+              )}
+            </div>
+          </nav>
+
+          {/* 评论区 */}
+          <CommentSection postId={slug} initialComments={comments} />
         </div>
-      </nav>
 
-      <CommentSection postId={slug} initialComments={comments} />
+        {/* 侧边栏目录 */}
+        <aside className="hidden lg:block w-64 flex-shrink-0">
+          <div className="sticky top-24">
+            <TableOfContents headings={post.headings || []} />
+          </div>
+        </aside>
+      </div>
     </article>
   )
 }

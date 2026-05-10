@@ -7,8 +7,15 @@ import gfm from 'remark-gfm'
 import rehypeHighlight from 'rehype-highlight'
 import rehypeSlug from 'rehype-slug'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
+import { calculateReadingTime } from './utils'
 
 const postsDirectory = path.join(process.cwd(), 'content/posts')
+
+export interface Heading {
+  id: string
+  text: string
+  level: 2 | 3
+}
 
 export interface PostData {
   slug: string
@@ -20,6 +27,8 @@ export interface PostData {
   published_at?: string
   cover_image?: string
   contentHtml?: string
+  readingTime?: number
+  headings?: Heading[]
 }
 
 /**
@@ -38,7 +47,7 @@ export function getSortedPostsData(): PostData[] {
       const slug = fileName.replace(/\.md$/, '')
       const fullPath = path.join(postsDirectory, fileName)
       const fileContents = fs.readFileSync(fullPath, 'utf8')
-      const { data } = matter(fileContents)
+      const { data, content } = matter(fileContents)
 
       // 处理日期：YAML 中未加引号的日期会被解析为 Date 对象
       let published_at: string | undefined
@@ -59,6 +68,7 @@ export function getSortedPostsData(): PostData[] {
         status: data.status || 'draft',
         published_at,
         cover_image: data.cover_image,
+        readingTime: calculateReadingTime(content),
       }
     })
 
@@ -127,7 +137,26 @@ export async function getPostData(slug: string): Promise<PostData> {
     published_at,
     cover_image: data.cover_image,
     contentHtml,
+    readingTime: calculateReadingTime(content),
+    headings: extractHeadings(contentHtml),
   }
+}
+
+/**
+ * 从 HTML 中提取标题（h2, h3）用于目录
+ */
+export function extractHeadings(contentHtml: string): Heading[] {
+  const headingRegex = /<h([23])\s+id="([^"]*)"[^>]*>(.*?)<\/h[23]>/g
+  const headings: Heading[] = []
+  let match
+  while ((match = headingRegex.exec(contentHtml)) !== null) {
+    headings.push({
+      level: parseInt(match[1]) as 2 | 3,
+      id: match[2],
+      text: match[3].replace(/<[^>]*>/g, ''),
+    })
+  }
+  return headings
 }
 
 /**

@@ -14,7 +14,7 @@ export default function SafeImage({ src, alt, className, fallback = '👨‍💻
 
   if (error) {
     return (
-      <span className="flex items-center justify-center w-full h-full text-5xl bg-cream-200">
+      <span className="flex items-center justify-center w-full h-full text-5xl bg-cream-200 dark:bg-warm-800">
         {fallback}
       </span>
     )

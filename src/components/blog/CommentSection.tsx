@@ -30,17 +30,17 @@ export default function CommentSection({ postId, initialComments }: CommentSecti
   }
 
   return (
-    <section className="mt-12 pt-8 border-t border-cream-300">
-      <h2 className="text-2xl font-bold text-warm-900 mb-6">评论</h2>
+    <section className="mt-12 pt-8 border-t border-cream-300 dark:border-warm-700">
+      <h2 className="text-2xl font-bold text-warm-900 dark:text-cream-100 mb-6">评论</h2>
 
       {submitSuccess && (
-        <div className="mb-6 p-4 bg-sage-100 text-sage-700 rounded-lg">
+        <div className="mb-6 p-4 bg-sage-100 dark:bg-sage-900/30 text-sage-700 dark:text-sage-300 rounded-lg">
           评论已提交，等待审核后显示。
         </div>
       )}
 
-      <div className="bg-white rounded-xl border border-cream-300 p-6 mb-8">
-        <h3 className="text-lg font-semibold text-warm-900 mb-4">发表评论</h3>
+      <div className="bg-white dark:bg-warm-900/80 rounded-xl border border-cream-300 dark:border-warm-700 p-6 mb-8">
+        <h3 className="text-lg font-semibold text-warm-900 dark:text-cream-100 mb-4">发表评论</h3>
         <CommentForm postId={postId} onSubmit={handleSubmit} />
       </div>
 

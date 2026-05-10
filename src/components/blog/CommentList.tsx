@@ -15,7 +15,7 @@ export default function CommentList({ comments }: CommentListProps) {
   if (comments.length === 0) {
     return (
       <div className="text-center py-8">
-        <p className="text-warm-600">暂无评论，来抢沙发吧！</p>
+        <p className="text-warm-600 dark:text-warm-400">暂无评论，来抢沙发吧！</p>
       </div>
     )
   }
@@ -25,24 +25,24 @@ export default function CommentList({ comments }: CommentListProps) {
       {comments.map((comment) => (
         <div
           key={comment.id}
-          className="bg-white rounded-xl border border-cream-300 p-6"
+          className="bg-white dark:bg-warm-900/80 rounded-xl border border-cream-300 dark:border-warm-700 p-6"
         >
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-cream-200 flex items-center justify-center">
-                <span className="text-warm-600 font-semibold">
+              <div className="w-10 h-10 rounded-full bg-cream-200 dark:bg-warm-800 flex items-center justify-center">
+                <span className="text-warm-600 dark:text-warm-400 font-semibold">
                   {comment.nickname.charAt(0).toUpperCase()}
                 </span>
               </div>
               <div>
-                <h4 className="font-semibold text-warm-900">{comment.nickname}</h4>
+                <h4 className="font-semibold text-warm-900 dark:text-cream-100">{comment.nickname}</h4>
                 <time className="text-sm text-warm-500">
                   {formatDate(comment.created_at)}
                 </time>
               </div>
             </div>
           </div>
-          <p className="text-warm-700 whitespace-pre-wrap">{comment.content}</p>
+          <p className="text-warm-700 dark:text-warm-300 whitespace-pre-wrap">{comment.content}</p>
         </div>
       ))}
     </div>

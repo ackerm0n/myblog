@@ -50,7 +50,7 @@ export default function AdminPostsPage() {
   if (isLoading) {
     return (
       <div className="container-custom py-12">
-        <div className="text-center text-warm-600">加载中...</div>
+        <div className="text-center text-warm-600 dark:text-warm-400">加载中...</div>
       </div>
     )
   }
@@ -59,14 +59,14 @@ export default function AdminPostsPage() {
     <div className="container-custom py-12">
       <div className="flex items-center justify-between mb-8">
         <div>
-          <Link href="/admin" className="text-warm-300 hover:text-warm-400 mb-2 inline-block">
+          <Link href="/admin" className="text-warm-300 dark:text-warm-300 hover:text-warm-400 dark:hover:text-warm-400 mb-2 inline-block">
             ← 返回管理后台
           </Link>
-          <h1 className="text-3xl font-bold text-warm-900">文章管理</h1>
+          <h1 className="text-3xl font-bold text-warm-900 dark:text-cream-100">文章管理</h1>
         </div>
         <Link
           href="/admin/posts/new"
-          className="px-6 py-3 bg-warm-300 text-white rounded-lg hover:bg-warm-400 transition-colors font-medium"
+          className="px-6 py-3 bg-warm-300 dark:bg-warm-500 text-white rounded-lg hover:bg-warm-400 dark:hover:bg-warm-600 transition-colors font-medium"
         >
           写新文章
         </Link>
@@ -74,32 +74,32 @@ export default function AdminPostsPage() {
 
       {posts.length === 0 ? (
         <div className="text-center py-16">
-          <p className="text-warm-600 text-lg mb-4">暂无文章</p>
+          <p className="text-warm-600 dark:text-warm-400 text-lg mb-4">暂无文章</p>
           <Link
             href="/admin/posts/new"
-            className="text-warm-300 hover:text-warm-400"
+            className="text-warm-300 dark:text-warm-300 hover:text-warm-400 dark:hover:text-warm-400"
           >
             创建第一篇文章 →
           </Link>
         </div>
       ) : (
-        <div className="bg-white rounded-xl border border-cream-300 overflow-hidden">
+        <div className="bg-white dark:bg-warm-900/80 rounded-xl border border-cream-300 dark:border-warm-700 overflow-hidden">
           <table className="w-full">
             <thead>
-              <tr className="border-b border-cream-300">
-                <th className="px-6 py-4 text-left text-warm-900 font-semibold">标题</th>
-                <th className="px-6 py-4 text-left text-warm-900 font-semibold">状态</th>
-                <th className="px-6 py-4 text-left text-warm-900 font-semibold">发布时间</th>
-                <th className="px-6 py-4 text-right text-warm-900 font-semibold">操作</th>
+              <tr className="border-b border-cream-300 dark:border-warm-700">
+                <th className="px-6 py-4 text-left text-warm-900 dark:text-cream-100 font-semibold">标题</th>
+                <th className="px-6 py-4 text-left text-warm-900 dark:text-cream-100 font-semibold">状态</th>
+                <th className="px-6 py-4 text-left text-warm-900 dark:text-cream-100 font-semibold">发布时间</th>
+                <th className="px-6 py-4 text-right text-warm-900 dark:text-cream-100 font-semibold">操作</th>
               </tr>
             </thead>
             <tbody>
               {posts.map((post) => (
-                <tr key={post.id} className="border-b border-cream-200 last:border-b-0">
+                <tr key={post.id} className="border-b border-cream-200 dark:border-warm-700/50 last:border-b-0">
                   <td className="px-6 py-4">
                     <Link
                       href={`/posts/${post.slug}`}
-                      className="text-warm-900 hover:text-warm-300 font-medium"
+                      className="text-warm-900 dark:text-cream-100 hover:text-warm-300 font-medium"
                     >
                       {post.title}
                     </Link>
@@ -114,20 +114,20 @@ export default function AdminPostsPage() {
                       }
                       className={`px-3 py-1 rounded-full text-sm font-medium ${
                         post.status === 'published'
-                          ? 'bg-sage-100 text-sage-700'
-                          : 'bg-cream-200 text-warm-600'
+                          ? 'bg-sage-100 dark:bg-sage-900/30 text-sage-700 dark:text-sage-300'
+                          : 'bg-cream-200 dark:bg-warm-800 text-warm-600 dark:text-warm-400'
                       }`}
                     >
                       {post.status === 'published' ? '已发布' : '草稿'}
                     </button>
                   </td>
-                  <td className="px-6 py-4 text-warm-600">
+                  <td className="px-6 py-4 text-warm-600 dark:text-warm-400">
                     {post.published_at || '-'}
                   </td>
                   <td className="px-6 py-4 text-right">
                     <Link
                       href={`/admin/posts/${post.id}`}
-                      className="text-warm-300 hover:text-warm-400 mr-4"
+                      className="text-warm-300 dark:text-warm-300 hover:text-warm-400 dark:hover:text-warm-400 mr-4"
                     >
                       编辑
                     </Link>

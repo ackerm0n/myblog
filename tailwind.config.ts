@@ -1,6 +1,7 @@
 import type { Config } from 'tailwindcss'
 
 const config: Config = {
+  darkMode: 'class',
   content: [
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
@@ -86,6 +87,29 @@ const config: Config = {
             },
             pre: {
               backgroundColor: '#2D2D2D',
+              color: '#E8E8E8',
+            },
+          },
+        },
+        invert: {
+          css: {
+            color: '#F5E6D3',
+            a: {
+              color: '#86C5AB',
+              '&:hover': {
+                color: '#6BB595',
+              },
+            },
+            h1: { color: '#F5E6D3' },
+            h2: { color: '#F5E6D3' },
+            h3: { color: '#F5E6D3' },
+            h4: { color: '#F5E6D3' },
+            code: {
+              color: '#F0A870',
+              backgroundColor: '#292524',
+            },
+            pre: {
+              backgroundColor: '#1a1a2e',
               color: '#E8E8E8',
             },
           },

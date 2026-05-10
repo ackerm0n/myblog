@@ -8,27 +8,27 @@ const footerLinks = [
 
 export default function Footer() {
   return (
-    <footer className="bg-white/60 backdrop-blur-xl border-t border-cream-300/50 relative z-10">
+    <footer className="bg-white/60 dark:bg-warm-900/60 backdrop-blur-xl border-t border-cream-300/50 dark:border-warm-700/50 relative z-10">
       <div className="container-custom py-12">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
-            <Link href="/" className="text-2xl font-bold text-warm-900">
-              TSY<span className="text-warm-300">Blog</span>
+            <Link href="/" className="text-2xl font-bold text-warm-900 dark:text-cream-100">
+              个人<span className="text-warm-300 dark:text-warm-400">博客</span>
             </Link>
-            <p className="mt-4 text-warm-600 text-sm leading-relaxed">
+            <p className="mt-4 text-warm-600 dark:text-warm-400 text-sm leading-relaxed">
               南京大学计算机学院<br />
               AI Infra · 星辰大海在脚下
             </p>
           </div>
 
           <div>
-            <h3 className="text-warm-900 font-semibold mb-4">快速链接</h3>
+            <h3 className="text-warm-900 dark:text-cream-100 font-semibold mb-4">快速链接</h3>
             <ul className="space-y-2">
               {footerLinks.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-warm-600 hover:text-warm-300 transition-colors text-sm"
+                    className="text-warm-600 dark:text-warm-400 hover:text-warm-300 transition-colors text-sm"
                   >
                     {link.name}
                   </Link>
@@ -38,8 +38,8 @@ export default function Footer() {
           </div>
 
           <div>
-            <h3 className="text-warm-900 font-semibold mb-4">联系我</h3>
-            <div className="space-y-2 text-sm text-warm-600">
+            <h3 className="text-warm-900 dark:text-cream-100 font-semibold mb-4">联系我</h3>
+            <div className="space-y-2 text-sm text-warm-600 dark:text-warm-400">
               <a
                 href="https://github.com/ackerm0n"
                 target="_blank"
@@ -59,8 +59,8 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 pt-8 border-t border-cream-300">
-          <p className="text-center text-warm-500 text-sm">
+        <div className="mt-12 pt-8 border-t border-cream-300 dark:border-warm-700">
+          <p className="text-center text-warm-500 dark:text-warm-500 text-sm">
             © {new Date().getFullYear()} 童思源. All rights reserved.
           </p>
         </div>

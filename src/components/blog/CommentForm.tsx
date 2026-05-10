@@ -79,7 +79,7 @@ export default function CommentForm({ postId, onSubmit }: CommentFormProps) {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label htmlFor="nickname" className="block text-sm font-medium text-warm-700 mb-1">
+          <label htmlFor="nickname" className="block text-sm font-medium text-warm-700 dark:text-warm-300 mb-1">
             昵称 *
           </label>
           <input
@@ -87,13 +87,13 @@ export default function CommentForm({ postId, onSubmit }: CommentFormProps) {
             id="nickname"
             value={nickname}
             onChange={(e) => setNickname(e.target.value)}
-            className="w-full px-4 py-2 border border-cream-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-warm-300 focus:border-transparent"
+            className="w-full px-4 py-2 border border-cream-300 dark:bg-warm-800/50 dark:text-cream-100 dark:border-warm-700 dark:placeholder-warm-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-warm-300 dark:focus:ring-warm-500 focus:border-transparent"
             placeholder="你的昵称"
             required
           />
         </div>
         <div>
-          <label htmlFor="email" className="block text-sm font-medium text-warm-700 mb-1">
+          <label htmlFor="email" className="block text-sm font-medium text-warm-700 dark:text-warm-300 mb-1">
             邮箱 *
           </label>
           <input
@@ -101,7 +101,7 @@ export default function CommentForm({ postId, onSubmit }: CommentFormProps) {
             id="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full px-4 py-2 border border-cream-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-warm-300 focus:border-transparent"
+            className="w-full px-4 py-2 border border-cream-300 dark:bg-warm-800/50 dark:text-cream-100 dark:border-warm-700 dark:placeholder-warm-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-warm-300 dark:focus:ring-warm-500 focus:border-transparent"
             placeholder="your@email.com"
             required
           />
@@ -109,7 +109,7 @@ export default function CommentForm({ postId, onSubmit }: CommentFormProps) {
       </div>
 
       <div>
-        <label htmlFor="content" className="block text-sm font-medium text-warm-700 mb-1">
+        <label htmlFor="content" className="block text-sm font-medium text-warm-700 dark:text-warm-300 mb-1">
           评论内容 *
         </label>
         <textarea
@@ -117,7 +117,7 @@ export default function CommentForm({ postId, onSubmit }: CommentFormProps) {
           value={content}
           onChange={(e) => setContent(e.target.value)}
           rows={4}
-          className="w-full px-4 py-2 border border-cream-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-warm-300 focus:border-transparent resize-none"
+          className="w-full px-4 py-2 border border-cream-300 dark:bg-warm-800/50 dark:text-cream-100 dark:border-warm-700 dark:placeholder-warm-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-warm-300 dark:focus:ring-warm-500 focus:border-transparent resize-none"
           placeholder="写下你的评论..."
           required
         />
@@ -130,7 +130,7 @@ export default function CommentForm({ postId, onSubmit }: CommentFormProps) {
         <div
           className={`p-3 rounded-lg ${
             message.includes('成功') || message.includes('提交')
-              ? 'bg-sage-100 text-sage-700'
+              ? 'bg-sage-100 dark:bg-sage-900/30 text-sage-700 dark:text-sage-300'
               : 'bg-red-100 text-red-700'
           }`}
         >
@@ -141,7 +141,7 @@ export default function CommentForm({ postId, onSubmit }: CommentFormProps) {
       <button
         type="submit"
         disabled={isSubmitting}
-        className="px-6 py-3 bg-warm-300 text-white rounded-lg hover:bg-warm-400 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+        className="px-6 py-3 bg-warm-300 dark:bg-warm-500 text-white rounded-lg hover:bg-warm-400 dark:hover:bg-warm-600 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {isSubmitting ? '提交中...' : '提交评论'}
       </button>

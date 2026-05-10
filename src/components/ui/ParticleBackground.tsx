@@ -1,10 +1,12 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
+import { useTheme } from './ThemeContext'
 
 // 鬼灭之刃风格的动态背景：樱花、水之呼吸波纹、紫藤花粒子
 export default function ParticleBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const { theme } = useTheme()
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -249,7 +251,7 @@ export default function ParticleBackground() {
     <canvas
       ref={canvasRef}
       className="fixed top-0 left-0 w-full h-full pointer-events-none"
-      style={{ zIndex: 0 }}
+      style={{ zIndex: 0, opacity: theme === 'dark' ? 0.6 : 1 }}
     />
   )
 }
